@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import sys
 
 # Take 100 samples from bernoulli(theta)
 # assume sum(y)=57
@@ -14,6 +15,9 @@ import matplotlib.pyplot as plt
 
 fname = 'hw3_1'
 imgFmt = 'png'
+labelFontSize = 18
+tickFontSize = 14
+titleFontSize = 22
 
 def prob_sum57(theta):
     N = 100
@@ -36,44 +40,52 @@ def main():
         probs[i] = prob_sum57(theta)*prob_prior(theta)/bayes_constant()
         print(i, probs[i])
 
-def part_b():
+def part_b(fname=fname):
     fname = fname + '_b'
     probs = np.zeros(11)
     THETAS = np.arange(0,1.1,0.1)
     for i, theta in enumerate(THETAS):
         probs[i] = prob_sum57(theta)
     fig = plt.figure()
-    plt.plot(THETAS,probs)
-    plt.xlabel(r'$\theta$', fontsize=22)
-    plt.title('3.1b', fontsize=22)
-    plt.ylabel(r'$Pr(\Sum y_i = 57 \mid \theta)$')
-    plt.xticks(fontsize=16)
-    plt.yticks(fontsize=16)
+    plt.plot(THETAS,probs,'o-',lw=2)
+    plt.xlabel(r'$\theta$', fontsize=labelFontSize)
+    plt.ylabel(r'$Pr(\sum_{y_i} = 57 \mid \theta)$', fontsize=labelFontSize)
+    plt.title('3.1b', fontsize=titleFontSize)
+    plt.xticks(fontsize=tickFontSize)
+    plt.yticks(fontsize=tickFontSize)
     plt.savefig(fname+'.'+imgFmt, format=imgFmt, dpi=300)
 
-def part_c():
+def part_c(fname=fname):
+    fname = fname + '_c'
     probs = np.zeros(11)
     THETAS = np.arange(0,1.1,0.1)
     for i, theta in enumerate(THETAS):
         probs[i] = prob_sum57(theta)*prob_prior(theta)/bayes_constant()
-    plt.plot(THETAS,probs)
-    plt.xlabel(r'$\theta$')
-    plt.title('3.1c')
-    # plt.ylabel(r'$Pr(\Sum y_i = 57 \mid \theta)$')
-    plt.show()
+    fig = plt.figure()
+    plt.plot(THETAS,probs,'o-',lw=2)
+    plt.xlabel(r'$\theta$', fontsize=labelFontSize)
+    plt.ylabel(r'$Pr(\sum_{y_i} = 57 \mid \theta)$', fontsize=labelFontSize)
+    plt.title('3.1c', fontsize=titleFontSize)
+    plt.xticks(fontsize=tickFontSize)
+    plt.yticks(fontsize=tickFontSize)
+    plt.savefig(fname+'.'+imgFmt, format=imgFmt, dpi=300)
 
-def part_d():
+def part_d(fname=fname):
+    fname = fname + '_d'
     THETAS = np.linspace(0,1,500)
     probs = np.zeros(THETAS.shape)
     for i, theta in enumerate(THETAS):
         probs[i] = prob_sum57(theta)*prob_prior(theta)/bayes_constant()
-    plt.plot(THETAS,probs)
-    plt.xlabel(r'$\theta$')
-    plt.title('3.1d')
-    # plt.ylabel(r'$Pr(\Sum y_i = 57 \mid \theta)$')
-    plt.show()
+    fig = plt.figure()
+    plt.plot(THETAS,probs,'o-',lw=2)
+    plt.xlabel(r'$\theta$', fontsize=labelFontSize)
+    plt.ylabel(r'$Pr(\sum_{y_i} = 57 \mid \theta)$', fontsize=labelFontSize)
+    plt.title('3.1d', fontsize=titleFontSize)
+    plt.xticks(fontsize=tickFontSize)
+    plt.yticks(fontsize=tickFontSize)
+    plt.savefig(fname+'.'+imgFmt, format=imgFmt, dpi=300)
 
-def part_e():
+def part_e(fname=fname):
     a = 1 + 57
     b = 1 + 100 - 57
 
@@ -83,13 +95,26 @@ def part_e():
     # plt.title('beta pdf')
 
     rv = beta(a, b)
-    plt.plot(x, rv.pdf(x))
-    plt.title('frozen beta pdf')
-    plt.show()
+    fig = plt.figure()
+    plt.plot(x, rv.pdf(x),'o-',lw=2)
+    plt.title('frozen beta pdf',fontsize=titleFontSize)
+    plt.xticks(fontsize=tickFontSize)
+    plt.yticks(fontsize=tickFontSize)
+    plt.savefig(fname+'.'+imgFmt, format=imgFmt, dpi=300)
 
 if __name__ == "__main__":
-    # part_b()
-    # part_c()
-    # part_d()
-    part_e()
-    # main()
+    if len(sys.argv) == 1:
+        part_b()
+    elif len(sys.argv) > 1:
+        if sys.argv[1] == 'b':
+            print('part b...')
+            part_b()
+        elif sys.argv[1] == 'c':
+            print('part c...')
+            part_c()
+        elif sys.argv[1] == 'd':
+            print('part d...')
+            part_d()
+        elif sys.argv[1] == 'e':
+            print('part e...')
+            part_e()
