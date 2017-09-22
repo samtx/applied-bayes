@@ -15,9 +15,10 @@ import sys
 
 fname = 'hw3_1'
 imgFmt = 'png'
-labelFontSize = 18
-tickFontSize = 14
-titleFontSize = 22
+dpi = 300
+labelFontSize = 16
+tickFontSize = 10
+titleFontSize = 14
 
 def prob_sum57(theta):
     N = 100
@@ -53,7 +54,7 @@ def part_b(fname=fname):
     plt.title('3.1b', fontsize=titleFontSize)
     plt.xticks(fontsize=tickFontSize)
     plt.yticks(fontsize=tickFontSize)
-    plt.savefig(fname+'.'+imgFmt, format=imgFmt, dpi=300)
+    plt.savefig(fname+'.'+imgFmt, format=imgFmt)
 
 def part_c(fname=fname):
     fname = fname + '_c'
@@ -68,7 +69,7 @@ def part_c(fname=fname):
     plt.title('3.1c', fontsize=titleFontSize)
     plt.xticks(fontsize=tickFontSize)
     plt.yticks(fontsize=tickFontSize)
-    plt.savefig(fname+'.'+imgFmt, format=imgFmt, dpi=300)
+    plt.savefig(fname+'.'+imgFmt, format=imgFmt)
 
 def part_d(fname=fname):
     fname = fname + '_d'
@@ -83,24 +84,22 @@ def part_d(fname=fname):
     plt.title('3.1d', fontsize=titleFontSize)
     plt.xticks(fontsize=tickFontSize)
     plt.yticks(fontsize=tickFontSize)
-    plt.savefig(fname+'.'+imgFmt, format=imgFmt, dpi=300)
+    plt.savefig(fname+'.'+imgFmt, format=imgFmt)
 
 def part_e(fname=fname):
     a = 1 + 57
     b = 1 + 100 - 57
-
-    x = np.linspace(beta.ppf(0.01, a, b), beta.ppf(0.99, a, b), 100)
-
-    # plt.plot(x, beta.pdf(x, a, b), 'r-', lw=5, alpha=0.6, label='beta pdf')
-    # plt.title('beta pdf')
-
+    fname = fname + '_e'
+    x = np.linspace(beta.ppf(0.0, a, b), beta.ppf(1, a, b), 100)
     rv = beta(a, b)
     fig = plt.figure()
     plt.plot(x, rv.pdf(x),'o-',lw=2)
-    plt.title('frozen beta pdf',fontsize=titleFontSize)
+    plt.xlabel(r'$\theta$',fontsize=labelFontSize)
+    plt.ylabel(r'$p(\theta \mid \mathbf{y} )$',fontsize=labelFontSize)
+    plt.title('3.1e',fontsize=titleFontSize)
     plt.xticks(fontsize=tickFontSize)
     plt.yticks(fontsize=tickFontSize)
-    plt.savefig(fname+'.'+imgFmt, format=imgFmt, dpi=300)
+    plt.savefig(fname+'.'+imgFmt, format=imgFmt)
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
