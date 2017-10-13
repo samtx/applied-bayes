@@ -72,7 +72,7 @@ def part_b(fname=fname):
 
 def part_c(fname=fname):
     fname = fname + '_c'
-    n = int(1e4)
+    n = int(1e5)
     # repeat part a
     # y = 0.0
     # for i in range(n):
@@ -93,7 +93,7 @@ def part_c(fname=fname):
         for i in range(n):
             thetaA = gamma.rvs(237, scale=1.0/20)
             yA = poisson.rvs(thetaA)  
-            thetaB = gamma.rvs(12*n0, scale=1.0/n0)
+            thetaB = gamma.rvs(12*n0+113, scale=1.0/(n0+13))
             yB = poisson.rvs(thetaB)  
             if (yB < yA):
                 y += 1.0
