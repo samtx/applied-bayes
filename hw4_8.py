@@ -25,19 +25,19 @@ titleFontSize = 14
 # def combln(N,k):
 #     return gammaln(N+1)-gammaln(N-k+1)-gammaln(k+1)
 
-# str_bach = (
-#     "1 0 0 1 2 2 1 5 2 0 0 0 0 0 0 1 1 1 0 0 0 1 1 2 1 3 2 0 0 3 0 0 0 2 "
-#     "1 0 2 1 0 0 1 3 0 1 1 0 2 0 0 2 2 1 3 0 0 0 1 1")
-# str_nobach = (
-#     "2 2 1 1 2 2 1 2 1 0 2 1 1 2 0 2 2 0 2 1 0 0 3 6 1 6 4 0 3 2 0 1 0 0 0 3 0 "
-#     "0 0 0 0 1 0 4 2 1 0 0 1 0 3 2 5 0 1 1 2 1 2 1 2 0 0 0 2 1 0 2 0 2 4 1 1 1 "
-#     "2 0 1 1 1 1 0 2 3 2 0 2 1 3 1 3 2 2 3 2 0 0 0 1 0 0 0 1 2 0 3 3 0 1 2 2 2 "
-#     "0 6 0 0 0 2 0 1 1 1 3 3 2 1 1 0 1 0 0 2 0 2 0 1 0 2 0 0 2 2 4 1 2 3 2 0 0 "
-#     "0 1 0 0 1 5 2 1 3 2 0 2 1 1 3 0 5 0 0 2 4 3 4 0 0 0 0 0 0 2 2 0 0 2 0 0 1 "
-#     "1 0 2 1 3 3 2 2 0 0 2 3 2 4 3 3 4 0 3 0 1 0 1 2 3 4 1 2 6 2 1 2 2")
+str_bach = (
+    "1 0 0 1 2 2 1 5 2 0 0 0 0 0 0 1 1 1 0 0 0 1 1 2 1 3 2 0 0 3 0 0 0 2 "
+    "1 0 2 1 0 0 1 3 0 1 1 0 2 0 0 2 2 1 3 0 0 0 1 1")
+str_nobach = (
+    "2 2 1 1 2 2 1 2 1 0 2 1 1 2 0 2 2 0 2 1 0 0 3 6 1 6 4 0 3 2 0 1 0 0 0 3 0 "
+    "0 0 0 0 1 0 4 2 1 0 0 1 0 3 2 5 0 1 1 2 1 2 1 2 0 0 0 2 1 0 2 0 2 4 1 1 1 "
+    "2 0 1 1 1 1 0 2 3 2 0 2 1 3 1 3 2 2 3 2 0 0 0 1 0 0 0 1 2 0 3 3 0 1 2 2 2 "
+    "0 6 0 0 0 2 0 1 1 1 3 3 2 1 1 0 1 0 0 2 0 2 0 1 0 2 0 0 2 2 4 1 2 3 2 0 0 "
+    "0 1 0 0 1 5 2 1 3 2 0 2 1 1 3 0 5 0 0 2 4 3 4 0 0 0 0 0 0 2 2 0 0 2 0 0 1 "
+    "1 0 2 1 3 3 2 2 0 0 2 3 2 4 3 3 4 0 3 0 1 0 1 2 3 4 1 2 6 2 1 2 2")
 
-# data_bach = np.fromstring(str_bach, sep=" ")
-# data_nobach = np.fromstring(str_nobach, sep=" ")
+data_bach = np.fromstring(str_bach, sep=" ")
+data_nobach = np.fromstring(str_nobach, sep=" ")
 
 # sum_bach = np.sum(data_bach)
 # sum_nobach = np.sum(data_nobach)
@@ -129,41 +129,55 @@ def part_b(fname=fname):
 
 def part_c(fname=fname):
     fname = fname + '_c'
-    n = int(1e4)
-    # repeat part a
-    # y = 0.0
-    # for i in range(n):
-    #     thetaA = gamma.rvs(237, scale=1.0/20)
-    #     yA = poisson.rvs(thetaA)    
-    #     thetaB = gamma.rvs(125, scale=1.0/14)
-    #     yB = poisson.rvs(thetaB)
-    #     if (yB < yA):
-    #         y += 1.0
-    # print("Pr(yB < yA) = {:.5f}".format(y/float(n)))
-    
-    # repeat part b
-    n0_list = np.arange(1,250)
-    Pr = np.zeros(n0_list.size) 
-    for j, n0 in enumerate(n0_list):
-        print n0
-        y = 0.0
-        for i in range(n):
-            thetaA = gamma.rvs(237, scale=1.0/20)
-            yA = poisson.rvs(thetaA)  
-            thetaB = gamma.rvs(12*n0, scale=1.0/n0)
-            yB = poisson.rvs(thetaB)  
-            if (yB < yA):
-                y += 1.0
-        Pr[j] = y/float(n)
+    rv = poisson(1.4)  # poisson pmf with theta=1.4
+    x = range(8)
     plt.figure()
-    plt.plot(n0_list, Pr, lw=1.5)
-    plt.xlabel(r'$n_0$',fontsize=labelFontSize)
-    plt.ylabel(r'$Pr(\tilde{Y}_B < \tilde{Y}_A \mid y_A, y_B)$',fontsize=labelFontSize)
-    plt.title('4.2c',fontsize=titleFontSize)
+    plt.hist(data_nobach, bins=8.5, alpha=0.5, normed=True, label='Empirical Data')
+    plt.plot(x, rv.pmf(x), lw=3, marker='o', ms=10, label=r'Poisson($\hat{\theta}_B=1.4$)')
+    # plt.xticks(range(8))
+    plt.xlim(-0.5,8)
+    plt.xlabel(r'Y',fontsize=labelFontSize)
+    plt.ylabel(r'P',fontsize=labelFontSize)
+    plt.title(r"4.8c",fontsize=titleFontSize)
+    plt.legend(loc="best")
     plt.xticks(fontsize=tickFontSize)
     plt.yticks(fontsize=tickFontSize)
     plt.savefig(fname+'.'+imgFmt, format=imgFmt)
     
+    
+def part_d(fname=fname):
+    fname += '_d'
+    nsamp = 5000
+    nB = 218
+    thetaB = gamma.rvs(307, scale=1.0/219, size=nsamp)
+    yB_zeros = np.zeros(nsamp, dtype=np.int)
+    yB_ones = np.zeros(nsamp, dtype=np.int)
+    for i in range(nsamp):
+        yB = poisson.rvs(thetaB[i], size=nB)
+        yB_zeros[i] = int(np.bincount(yB)[0])
+        yB_ones[i] = int(np.bincount(yB)[1])
+    plt.figure()
+    plt.plot(range(nsamp), yB_zeros, label='Zero children')
+    plt.xlabel('Sample Number', fontsize=labelFontSize)
+    plt.legend(loc='best')
+    plt.savefig(fname+'_zeros.'+imgFmt, format=imgFmt)
+    
+    a = yB_zeros[0]
+    b = yB_ones[0]
+    
+    plt.figure()
+    plt.scatter(yB_zeros, yB_ones)
+    plt.plot(a, b , 'or', ms=10)
+    plt.xlabel('Zero Children', fontsize=labelFontSize)
+    plt.ylabel('One Child', fontsize=labelFontSize)
+    plt.title('4.8d',fontsize=titleFontSize)
+    # plt.legend(loc='best')
+    plt.savefig(fname+'_scatter.'+imgFmt, format=imgFmt)
+    
+    print('zero={0}, one={1}'.format(a,b))
+    
+
+        
     
 if __name__ == "__main__":
     if len(sys.argv) == 1:
@@ -188,9 +202,9 @@ if __name__ == "__main__":
         elif sys.argv[1] == 'c':
             print('part c...')
             part_c()
-        # elif sys.argv[1] == 'd':
-        #     print('part d...')
-        #     part_d()
+        elif sys.argv[1] == 'd':
+            print('part d...')
+            part_d()
         # elif sys.argv[1] == 'e':
         #     print('part e...')
         #     part_e()
