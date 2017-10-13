@@ -72,7 +72,7 @@ def part_b(fname=fname):
 
 def part_c(fname=fname):
     fname = fname + '_c'
-    n = int(1e5)
+    n = int(1e4)
     # repeat part a
     # y = 0.0
     # for i in range(n):
@@ -88,6 +88,7 @@ def part_c(fname=fname):
     n0_list = np.arange(1,250)
     Pr = np.zeros(n0_list.size) 
     for j, n0 in enumerate(n0_list):
+        print n0
         y = 0.0
         for i in range(n):
             thetaA = gamma.rvs(237, scale=1.0/20)
