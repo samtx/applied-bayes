@@ -53,8 +53,8 @@ def part_b(fname=fname):
     Pr = np.zeros(n0_list.size) 
     for j, n0 in enumerate(n0_list):
         y = 0.0
-        alpha=12*n0
-        beta=n0 
+        alpha=12*n0+113
+        beta=n0+13 
         pB = gamma.rvs(alpha, scale=1.0/beta, size=n)
         for i in range(n):
             if (pB[i] < pA[i]):
