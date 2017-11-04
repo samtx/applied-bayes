@@ -68,140 +68,25 @@ def part_d(fname=fname):
     #     thetaB = theta * gma  # gma = thetaA/thetaB
     #     p[idx] = np.mean(thetaB - thetaA)
     #     print('p (ag=',ag,') = ',p[idx])
-    # print(p)
+        
+    # # print(p)
     p = [0.38144128,  0.33382475,  0.26846618,  0.20047005,  0.13274658]
     plt.figure()
     plt.plot(ag_list, p, '-o')
     plt.xlabel(r'$a_{\gamma}, b_{\gamma}$',fontsize=labelFontSize)
-    plt.ylabel(r'$p(\theta_B -\theta_A \mid \mathbf{y}_B, \mathbf{y}_A)$',fontsize=labelFontSize)
+    plt.ylabel(r'$E(\theta_B -\theta_A \mid \mathbf{y}_B, \mathbf{y}_A)$',fontsize=labelFontSize)
     plt.title(r"6.1d",fontsize=titleFontSize)
     plt.xticks(ag_list, fontsize=tickFontSize)
     plt.yticks(fontsize=tickFontSize)
     plt.savefig(fname+'.'+imgFmt, format=imgFmt)
 
             
-def part_b(fname=fname):
-    fname += '_b'
-    nsamps = int(1e5)
-    thetaA = np.zeros(nsamps)
-    thetaB = np.zeros(nsamps)
-    yA = np.zeros(nsamps)
-    yB = np.zeros(nsamps)
-    for i in range(nsamps):   # do Monte Carlo
-        thetaA[i] = gamma.rvs(56, scale=1.0/59)
-        yA[i] = poisson.rvs(thetaA[i])    
-        thetaB[i] = gamma.rvs(307, scale=1.0/219)
-        yB[i] = poisson.rvs(thetaB[i])        
-    thetaBA = thetaB - thetaA
-    yBA = yB - yA
-    
-    plt.figure()
-    plt.hist(thetaBA, bins=16, normed=True)
-    plt.xlabel(r'$\theta_B-\theta_A$',fontsize=labelFontSize)
-    plt.ylabel(r'$p(\theta_B-\theta_A)$',fontsize=labelFontSize)
-    plt.title(r"4.8b  $\theta_B-\theta_A$",fontsize=titleFontSize)
-    plt.xticks(fontsize=tickFontSize)
-    plt.yticks(fontsize=tickFontSize)
-    plt.savefig(fname+'thetaBA.'+imgFmt, format=imgFmt)
-    
-    plt.figure()
-    plt.hist(yBA, bins=16, normed=True)
-    plt.xlabel(r'$\tilde{Y}_B-\tilde{Y}_A$',fontsize=labelFontSize)
-    plt.ylabel(r'$p(\tilde{Y}_B-\tilde{Y}_A)$',fontsize=labelFontSize)
-    plt.title(r"4.8b  $\tilde{Y}_B-\tilde{Y}_A$",fontsize=titleFontSize)
-    plt.xticks(fontsize=tickFontSize)
-    plt.yticks(fontsize=tickFontSize)
-    plt.savefig(fname+'yBA.'+imgFmt, format=imgFmt)
-    
-    thetaCI = bayes_mvs(thetaB - thetaA, alpha=0.95)
-    yCI = bayes_mvs(yB - yA, alpha=0.95)
-    print("thetaCI = {0}".format(thetaCI[0][1]))
-    print("yCI     = {0}".format(yCI[0][1]))
-    
-    thetaCI2 = (np.percentile(thetaBA, 2.5), np.percentile(thetaBA, 97.5)) 
-    yCI2 = (np.percentile(yBA, 2.5), np.percentile(yBA, 97.5)) 
-    print("thetaCI2 = {0}".format(thetaCI2))
-    print("yCI2     = {0}".format(yCI2))
-    
-    
-
-def part_c(fname=fname):
-    fname = fname + '_c'
-    rv = poisson(1.4)  # poisson pmf with theta=1.4
-    x = range(8)
-    plt.figure()
-    plt.hist(data_nobach, bins=8.5, alpha=0.5, normed=True, label='Empirical Data')
-    plt.plot(x, rv.pmf(x), lw=3, marker='o', ms=10, label=r'Poisson($\hat{\theta}_B=1.4$)')
-    # plt.xticks(range(8))
-    plt.xlim(-0.5,8)
-    plt.xlabel(r'Y',fontsize=labelFontSize)
-    plt.ylabel(r'P',fontsize=labelFontSize)
-    plt.title(r"4.8c",fontsize=titleFontSize)
-    plt.legend(loc="best")
-    plt.xticks(fontsize=tickFontSize)
-    plt.yticks(fontsize=tickFontSize)
-    plt.savefig(fname+'.'+imgFmt, format=imgFmt)
-    
-    
-# def part_d(fname=fname):
-#     fname += '_d'
-#     nsamp = 5000
-#     nB = 218
-#     thetaB = gamma.rvs(307, scale=1.0/219, size=nsamp)
-#     yB_zeros = np.zeros(nsamp, dtype=np.int)
-#     yB_ones = np.zeros(nsamp, dtype=np.int)
-#     for i in range(nsamp):
-#         yB = poisson.rvs(thetaB[i], size=nB)
-#         yB_zeros[i] = int(np.bincount(yB)[0])
-#         yB_ones[i] = int(np.bincount(yB)[1])
-#     plt.figure()
-#     plt.plot(range(nsamp), yB_zeros, label='Zero children')
-#     plt.xlabel('Sample Number', fontsize=labelFontSize)
-#     plt.legend(loc='best')
-#     plt.savefig(fname+'_zeros.'+imgFmt, format=imgFmt)
-    
-    
-    
-    a = yB_zeros[0]
-    b = yB_ones[0]
-    
-    plt.figure()
-    plt.scatter(yB_zeros, yB_ones)
-    plt.plot(a, b , 'or', ms=10)
-    plt.xlabel('Zero Children', fontsize=labelFontSize)
-    plt.ylabel('One Child', fontsize=labelFontSize)
-    plt.title('4.8d',fontsize=titleFontSize)
-    # plt.legend(loc='best')
-    plt.savefig(fname+'_scatter.'+imgFmt, format=imgFmt)
-
-    # plt.figure()
-    np.histogram2d(yB_zeros, yB_ones)
-    plt.xlabel('Y = 0', fontsize=labelFontSize)
-    plt.ylabel('Y = 1', fontsize=labelFontSize)
-    # plt.legend(loc='best')
-    plt.title('4.8d', fontsize=titleFontSize)
-    plt.savefig(fname+'_hist2d.'+imgFmt, format=imgFmt)
-
-    
-    print('zero={0}, one={1}'.format(a,b))
-    
 
         
     
 if __name__ == "__main__":
     if len(sys.argv) == 1:
         part_d()
-    elif len(sys.argv) > 1:
+    else:
+        part_d()
 
-        if sys.argv[1] == 'a':
-            print('part a...')
-            part_a()
-        elif sys.argv[1] == 'b':
-            print('part b...')
-            part_b()
-        elif sys.argv[1] == 'c':
-            print('part c...')
-            part_c()
-        elif sys.argv[1] == 'd':
-            print('part d...')
-            part_d()
